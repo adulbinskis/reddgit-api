@@ -20,7 +20,6 @@ namespace ReddgitAPI.ORM.Services
         {
             base.OnModelCreating(modelBuilder);
 
-            // Apply configurations
             modelBuilder.ApplyConfiguration(new QuestionConfiguration());
             modelBuilder.ApplyConfiguration(new AnswerConfiguration());
         }
