@@ -34,7 +34,8 @@ namespace ReddgitAPI.Application.Identity.Commands
                 return new RegistrationResponse
                 {
                     Username = request.Username,
-                    Email = request.Email
+                    Email = request.Email,
+                    Role = Role.User
                 };
             }
 
