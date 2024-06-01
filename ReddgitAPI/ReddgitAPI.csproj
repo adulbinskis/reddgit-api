@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6" />
@@ -28,9 +29,7 @@
     <Folder Include="Application\Answers\Commands\" />
     <Folder Include="Application\Answers\Models\" />
     <Folder Include="Application\Answers\Queries\" />
-    <Folder Include="Application\Questions\Commands\" />
     <Folder Include="Application\Questions\Models\" />
-    <Folder Include="Application\Questions\Queries\" />
     <Folder Include="ORM\Migrations\" />
   </ItemGroup>
 

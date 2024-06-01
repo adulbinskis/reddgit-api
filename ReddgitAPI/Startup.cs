@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using ReddgitAPI.Application.Identity.Services;
 using System.Text.Json.Serialization;
+using ReddgitAPI.Application.Questions.Commands;
 
 namespace ReddgitAPI
 {
@@ -23,6 +24,8 @@ namespace ReddgitAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+
             services.AddEndpointsApiExplorer();
 
             services.AddSwaggerGen(options =>
@@ -38,25 +41,35 @@ namespace ReddgitAPI
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme
                 {
-                    Reference = new OpenApiReference
                     {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
                     }
-                },
-                new string[] {}
-            }
-        });
+                });
+
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+                options.MapType<CreateQuestion.Command>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
+                options.MapType<UpdateQuestion.Command>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
+                options.MapType<DeleteQuestion.Command>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
             });
+
+
+            services.AddScoped<TokenService, TokenService>();
+            services.AddScoped<IBaseEntityService, BaseEntityService>();
 
             services.AddProblemDetails();
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddScoped<TokenService, TokenService>();
+            services.AddAutoMapper(typeof(Program));
 
             services.AddControllers().AddJsonOptions(opt =>
             {

@@ -53,7 +53,7 @@ namespace ReddgitAPI.Application.Identity.Services
         {
             return new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:JwtRegisteredClaimNamesSub"]),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
