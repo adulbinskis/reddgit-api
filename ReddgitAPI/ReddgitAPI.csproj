@@ -26,9 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Answers\Commands\" />
-    <Folder Include="Application\Answers\Models\" />
-    <Folder Include="Application\Answers\Queries\" />
     <Folder Include="Application\Questions\Models\" />
     <Folder Include="ORM\Migrations\" />
   </ItemGroup>
