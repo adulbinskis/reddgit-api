@@ -17,20 +17,30 @@ namespace ReddgitAPI.Application.Questions.Commands
 
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        private readonly IBaseEntityService _baseEntityService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DeleteQuestion(ApplicationDbContext dbContext, IMapper mapper, IBaseEntityService baseEntityService, IHttpContextAccessor httpContextAccessor)
+        public DeleteQuestion(ApplicationDbContext dbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _mapper = mapper;
-            _baseEntityService = baseEntityService;
             _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<QuestionDto> Handle(Command request, CancellationToken cancellationToken)
         {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var question = await _dbContext.Questions.OrderByDescending(x => x.CreatedAt).FirstOrDefaultAsync(x => x.Id == request.Id);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new Exception("User ID not found in token.");
+            }
+
+            if (question.UserId != userId)
+            {
+                throw new Exception("You are not authorized to update this question.");
+            }
 
             question.Deleted = true;
 

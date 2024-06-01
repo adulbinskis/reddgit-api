@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using ReddgitAPI.Application.Identity.Services;
 using System.Text.Json.Serialization;
 using ReddgitAPI.Application.Questions.Commands;
+using ReddgitAPI.Application.Answers.Commands;
 
 namespace ReddgitAPI
 {
@@ -56,6 +57,10 @@ namespace ReddgitAPI
                 });
 
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+                options.MapType<CreateAnswer.Command>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
+                options.MapType<UpdateAnswer.Command>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
+                options.MapType<DeleteAnswer.Command>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
 
                 options.MapType<CreateQuestion.Command>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
                 options.MapType<UpdateQuestion.Command>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
