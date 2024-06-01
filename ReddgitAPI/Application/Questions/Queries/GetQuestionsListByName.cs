@@ -30,7 +30,8 @@ namespace ReddgitAPI.Application.Questions.Queries
             {
                 query = query
                     .Where(x => x.Deleted == false)
-                    .Where(q => q.Title.Contains(request.Title));
+                    .Where(q => q.Title.Contains(request.Title))
+                    .OrderByDescending(x => x.CreatedAt);
             }
 
             var questions = await query.ToListAsync(cancellationToken);

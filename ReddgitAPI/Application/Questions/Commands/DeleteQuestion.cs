@@ -30,7 +30,7 @@ namespace ReddgitAPI.Application.Questions.Commands
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var question = await _dbContext.Questions.OrderByDescending(x => x.CreatedAt).FirstOrDefaultAsync(x => x.Id == request.Id);
+            var question = await _dbContext.Questions.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (string.IsNullOrEmpty(userId))
             {

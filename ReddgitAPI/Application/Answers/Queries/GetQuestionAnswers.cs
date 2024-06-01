@@ -25,9 +25,9 @@ namespace ReddgitAPI.Application.Answers.Queries
         public async Task<List<AnswerDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var answers = await _dbContext.Answers
-                .AsNoTracking()
                 .Where(x => x.Deleted == false)
                 .Where(x => x.QuestionId == request.QuestionId)
+                .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync(cancellationToken);
 
             var answerDtos = _mapper.Map<List<AnswerDto>>(answers);
