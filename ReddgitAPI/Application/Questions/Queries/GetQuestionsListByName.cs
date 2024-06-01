@@ -28,7 +28,9 @@ namespace ReddgitAPI.Application.Questions.Queries
 
             if (!string.IsNullOrEmpty(request.Title))
             {
-                query = query.Where(q => q.Title.Contains(request.Title));
+                query = query
+                    .Where(x => x.Deleted == false)
+                    .Where(q => q.Title.Contains(request.Title));
             }
 
             var questions = await query.ToListAsync(cancellationToken);

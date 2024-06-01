@@ -22,7 +22,10 @@ namespace ReddgitAPI.Application.Questions.Queries
 
         public async Task<List<QuestionDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var questions = await _dbContext.Questions.AsNoTracking().ToListAsync(cancellationToken);
+            var questions = await _dbContext.Questions
+                .AsNoTracking()
+                .Where(x => x.Deleted == false)
+                .ToListAsync(cancellationToken);
 
             var dtos = _mapper.Map<List<QuestionDto>>(questions);
             return dtos;
