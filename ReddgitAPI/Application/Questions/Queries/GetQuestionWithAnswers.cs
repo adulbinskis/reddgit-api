@@ -25,9 +25,10 @@ namespace ReddgitAPI.Application.Questions.Queries
         public async Task<QuestionDetailDto> Handle(Query request, CancellationToken cancellationToken)
         {
             var question = await _dbContext.Questions
+                .OrderByDescending(x => x.CreatedAt)
                 .Where(q => q.Id == request.QuestionId)
                 .Include(q => q.ApplicationUser)
-                .Include(q => q.Answers)
+                .Include(q => q.Answers.OrderByDescending(a => a.CreatedAt))
                     .ThenInclude(a => a.ApplicationUser)
                 .FirstOrDefaultAsync(cancellationToken);
 
