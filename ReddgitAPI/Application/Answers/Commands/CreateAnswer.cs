@@ -9,9 +9,9 @@ using System.Security.Claims;
 
 namespace ReddgitAPI.Application.Answers.Commands
 {
-    public class CreateAnswer : IRequestHandler<CreateAnswer.Command, AnswerDto>
+    public class CreateAnswer : IRequestHandler<CreateAnswer.Command, AnswerDetailDto>
     {
-        public class Command : IRequest<AnswerDto>
+        public class Command : IRequest<AnswerDetailDto>
         {
             public string Content { get; set; }
 
@@ -31,7 +31,7 @@ namespace ReddgitAPI.Application.Answers.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<AnswerDto> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<AnswerDetailDto> Handle(Command request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -69,7 +69,7 @@ namespace ReddgitAPI.Application.Answers.Commands
                 throw;
             }
 
-            var answerDto = _mapper.Map<AnswerDto>(answer);
+            var answerDto = _mapper.Map<AnswerDetailDto>(answer);
 
             return answerDto;
         }

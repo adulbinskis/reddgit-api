@@ -7,11 +7,11 @@ using System.Security.Claims;
 
 namespace ReddgitAPI.Application.Answers.Commands
 {
-    public class UpdateAnswer : IRequestHandler<UpdateAnswer.Command, AnswerDto>
+    public class UpdateAnswer : IRequestHandler<UpdateAnswer.Command, AnswerDetailDto>
     {
-        public class Command : IRequest<AnswerDto>
+        public class Command : IRequest<AnswerDetailDto>
         {
-            public string Id { get; set; }
+            public string AnswerId { get; set; }
             public string Content { get; set; }
         }
 
@@ -28,12 +28,12 @@ namespace ReddgitAPI.Application.Answers.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<AnswerDto> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<AnswerDetailDto> Handle(Command request, CancellationToken cancellationToken)
         {
 
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var answer = await _dbContext.Answers.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var answer = await _dbContext.Answers.FirstOrDefaultAsync(x => x.Id == request.AnswerId);
 
 
             if (string.IsNullOrEmpty(userId))
@@ -54,7 +54,7 @@ namespace ReddgitAPI.Application.Answers.Commands
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            var ansewrDto = _mapper.Map<AnswerDto>(answer);
+            var ansewrDto = _mapper.Map<AnswerDetailDto>(answer);
 
             return ansewrDto;
         }

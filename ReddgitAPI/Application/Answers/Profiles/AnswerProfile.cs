@@ -7,8 +7,6 @@ namespace ReddgitAPI.Application.Answers.Profiles
     {
         public AnswerProfile()
         {
-            CreateMap<Answer, AnswerDto>();
-            CreateMap<AnswerDto, Answer>();
         }
     }
 }

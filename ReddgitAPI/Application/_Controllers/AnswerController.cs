@@ -11,21 +11,21 @@ namespace ReddgitAPI.Application._Controllers
     {
         [HttpPost("[action]")]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult<AnswerDto>> CreateAnswer([FromBody] CreateAnswer.Command command)
+        public async Task<ActionResult<AnswerDetailDto>> CreateAnswer([FromBody] CreateAnswer.Command command)
         {
             return await Mediator.Send(command);
         }
 
         [HttpPut("[action]")]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult<AnswerDto>> UpdateAnswer([FromBody] UpdateAnswer.Command command)
+        public async Task<ActionResult<AnswerDetailDto>> UpdateAnswer([FromBody] UpdateAnswer.Command command)
         {
             return await Mediator.Send(command);
         }
 
         [HttpDelete("[action]")]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult<AnswerDto>> DeleteAnswer([FromBody] DeleteAnswer.Command command)
+        public async Task<ActionResult<AnswerDetailDto>> DeleteAnswer([FromBody] DeleteAnswer.Command command)
         {
             return await Mediator.Send(command);
         }

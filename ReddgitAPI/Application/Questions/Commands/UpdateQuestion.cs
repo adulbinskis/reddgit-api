@@ -13,7 +13,7 @@ namespace ReddgitAPI.Application.Questions.Commands
     {
         public class Command : IRequest<QuestionDto>
         {
-            public string Id { get; set; }
+            public string QuestionId { get; set; }
             public string Title { get; set; }
             public string Content { get; set; }
         }
@@ -40,11 +40,11 @@ namespace ReddgitAPI.Application.Questions.Commands
                 throw new Exception("User ID not found in token.");
             }
 
-            var question = await _dbContext.Questions.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var question = await _dbContext.Questions.FirstOrDefaultAsync(x => x.Id == request.QuestionId);
 
             if (question == null)
             {
-                throw new Exception($"Question with ID {request.Id} not found.");
+                throw new Exception($"Question with ID {request.QuestionId} not found.");
             }
 
             if (question.UserId != userId)
