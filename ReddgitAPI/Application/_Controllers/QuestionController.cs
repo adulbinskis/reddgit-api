@@ -12,7 +12,7 @@ namespace ReddgitAPI.Application._Controllers
     public class QuestionController : MediatRController
     {
         [HttpGet("[action]")]
-        public async Task<ActionResult<List<QuestionDto>>> GetQuestionsListByName([FromQuery] GetQuestionsListByName.Query query)
+        public async Task<ActionResult<QuestionDetailDto>> GetQuestionWithAnswers([FromQuery] GetQuestionWithAnswers.Query query)
         {
             return await Mediator.Send(query);
         }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ReddgitAPI.Application.Answers.Commands;
 using ReddgitAPI.Application.Answers.Models;
-using ReddgitAPI.Application.Answers.Queries;
 
 namespace ReddgitAPI.Application._Controllers
 {
@@ -10,12 +9,6 @@ namespace ReddgitAPI.Application._Controllers
     [ApiController]
     public class AnswerController : MediatRController
     {
-        [HttpGet("[action]")]
-        public async Task<ActionResult<List<AnswerDto>>> GetQuestionAnswers ([FromQuery] GetQuestionAnswers.Query query)
-        {
-            return await Mediator.Send(query);
-        }
-
         [HttpPost("[action]")]
         [Authorize(Roles = "User")]
         public async Task<ActionResult<AnswerDto>> CreateAnswer([FromBody] CreateAnswer.Command command)

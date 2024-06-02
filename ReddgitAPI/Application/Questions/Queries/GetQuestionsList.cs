@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using ReddgitAPI.Application.Questions.Models;
 using ReddgitAPI.ORM.Services;
@@ -23,8 +24,16 @@ namespace ReddgitAPI.Application.Questions.Queries
         public async Task<List<QuestionDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var questions = await _dbContext.Questions
-                .Where(x => x.Deleted == false)
+                .Where(x => !x.Deleted)
                 .OrderByDescending(x => x.CreatedAt)
+                .Select(q => new QuestionDto
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    Content = q.Content,
+                    UserName = q.ApplicationUser.UserName,
+                    CreatedAt = q.CreatedAt
+                })
                 .ToListAsync(cancellationToken);
 
             var dtos = _mapper.Map<List<QuestionDto>>(questions);
