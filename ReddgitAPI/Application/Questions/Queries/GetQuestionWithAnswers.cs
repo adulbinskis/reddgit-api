@@ -10,7 +10,7 @@ namespace ReddgitAPI.Application.Questions.Queries
     {
         public class Query : IRequest<QuestionDetailDto>
         { 
-            public string Id { get; set; }
+            public string QuestionId { get; set; }
         }
 
         private readonly ApplicationDbContext _dbContext;
@@ -25,7 +25,7 @@ namespace ReddgitAPI.Application.Questions.Queries
         public async Task<QuestionDetailDto> Handle(Query request, CancellationToken cancellationToken)
         {
             var question = await _dbContext.Questions
-                .Where(q => q.Id == request.Id)
+                .Where(q => q.Id == request.QuestionId)
                 .Include(q => q.ApplicationUser)
                 .Include(q => q.Answers)
                     .ThenInclude(a => a.ApplicationUser)
