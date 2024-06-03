@@ -8,9 +8,9 @@ using ReddgitAPI.ORM.Services;
 
 namespace ReddgitAPI.Application.Questions.Queries
 {
-    public class GetQuestionsList : IRequestHandler<GetQuestionsList.Query, List<QuestionDto>>
+    public class GetQuestionsList : IRequestHandler<GetQuestionsList.Query, List<QuestionDetailDto>>
     {
-        public class Query : IRequest<List<QuestionDto>>
+        public class Query : IRequest<List<QuestionDetailDto>>
         { 
             public string SearchCriteria { get; set; }
         }
@@ -24,7 +24,7 @@ namespace ReddgitAPI.Application.Questions.Queries
             _mapper = mapper;
         }
 
-        public async Task<List<QuestionDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<List<QuestionDetailDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             IQueryable<Question> query = _dbContext.Questions
                 .Where(x => !x.Deleted)
@@ -38,17 +38,18 @@ namespace ReddgitAPI.Application.Questions.Queries
             }
 
             var questions = await query
-                .Select(q => new QuestionDto
+                .Select(q => new QuestionDetailDto
                 {
                     Id = q.Id,
                     Title = q.Title,
                     Content = q.Content,
                     UserName = q.ApplicationUser.UserName,
-                    CreatedAt = q.CreatedAt
+                    CreatedAt = q.CreatedAt,
+                    UserId = q.UserId,
                 })
                 .ToListAsync(cancellationToken);
 
-            var dtos = _mapper.Map<List<QuestionDto>>(questions);
+            var dtos = _mapper.Map<List<QuestionDetailDto>>(questions);
             return dtos;
         }
     }

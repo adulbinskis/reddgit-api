@@ -28,8 +28,6 @@ namespace ReddgitAPI.Application.Questions.Queries
                 .OrderByDescending(x => x.CreatedAt)
                 .Where(q => q.Id == request.QuestionId)
                 .Include(q => q.ApplicationUser)
-                .Include(q => q.Answers.OrderByDescending(a => a.CreatedAt).Where(q => q.Deleted == false))
-                    .ThenInclude(a => a.ApplicationUser)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (question == null)

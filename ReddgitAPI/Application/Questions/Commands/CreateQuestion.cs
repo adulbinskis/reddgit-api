@@ -10,9 +10,9 @@ using System.Runtime.Serialization;
 
 namespace ReddgitAPI.Application.Questions.Commands
 {
-    public class CreateQuestion : IRequestHandler<CreateQuestion.Command, QuestionDto>
+    public class CreateQuestion : IRequestHandler<CreateQuestion.Command, QuestionDetailDto>
     {
-        public class Command : IRequest<QuestionDto>
+        public class Command : IRequest<QuestionDetailDto>
         {
             public string Title { get; set; }
             public string Content { get; set; }
@@ -31,7 +31,7 @@ namespace ReddgitAPI.Application.Questions.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<QuestionDto> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<QuestionDetailDto> Handle(Command request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -62,7 +62,7 @@ namespace ReddgitAPI.Application.Questions.Commands
                 throw;
             }
 
-            var questionDto = _mapper.Map<QuestionDto>(question);
+            var questionDto = _mapper.Map<QuestionDetailDto>(question);
 
             return questionDto;
         }

@@ -8,9 +8,9 @@ using System.Security.Claims;
 
 namespace ReddgitAPI.Application.Questions.Commands
 {
-    public class DeleteQuestion : IRequestHandler<DeleteQuestion.Command, QuestionDto>
+    public class DeleteQuestion : IRequestHandler<DeleteQuestion.Command, QuestionDetailDto>
     {
-        public class Command : IRequest<QuestionDto>
+        public class Command : IRequest<QuestionDetailDto>
         {
             public string QuestionId { get; set; }
         }
@@ -26,7 +26,7 @@ namespace ReddgitAPI.Application.Questions.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<QuestionDto> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<QuestionDetailDto> Handle(Command request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -47,7 +47,7 @@ namespace ReddgitAPI.Application.Questions.Commands
             _dbContext.Update(question);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            var questionDto = _mapper.Map<QuestionDto>(question);
+            var questionDto = _mapper.Map<QuestionDetailDto>(question);
 
             return questionDto;
         }

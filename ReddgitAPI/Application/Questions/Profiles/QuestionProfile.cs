@@ -8,17 +8,11 @@ namespace ReddgitAPI.Application.Questions.Profiles
     {
         public QuestionProfile() 
         {
-            CreateMap<Question, QuestionDto>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
-
-            CreateMap<QuestionDto, Question>();
 
             CreateMap<Question, QuestionDetailDto>()
-                  .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName))
-                  .ForMember(dest => dest.Answers, opt => opt.MapFrom(src => src.Answers));
+                  .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
 
-            CreateMap<Answer, AnswerDetailDto>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
+
         }
     }
 }

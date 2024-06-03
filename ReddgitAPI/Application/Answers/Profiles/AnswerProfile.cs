@@ -7,6 +7,8 @@ namespace ReddgitAPI.Application.Answers.Profiles
     {
         public AnswerProfile()
         {
+            CreateMap<Answer, AnswerDetailDto>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
         }
     }
 }

@@ -10,6 +10,5 @@ namespace ReddgitAPI.Application.Questions.Models
         public string UserName { get; set; }
         public string UserId { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
-        public List<AnswerDetailDto> Answers { get; set; }
     }
 }
