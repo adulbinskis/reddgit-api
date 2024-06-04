@@ -18,7 +18,7 @@ namespace ReddgitAPI.Application._Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<List<QuestionDetailDto>>> GetQuestionsList([FromQuery] GetQuestionsList.Query query)
+        public async Task<ActionResult<PaginatedQuestionsDto>> GetQuestionsList([FromQuery] GetQuestionsList.Query query)
         {
             return await Mediator.Send(query);
         }
