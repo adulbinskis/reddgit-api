@@ -7,7 +7,7 @@ using ReddgitAPI.ORM.Services;
 
 namespace ReddgitAPI.Application.Questions.Queries
 {
-    public class GetQuestionWithAnswers : IRequestHandler<GetQuestionWithAnswers.Query, QuestionDetailDto>
+    public class GetQuestion : IRequestHandler<GetQuestion.Query, QuestionDetailDto>
     {
         public class Query : IRequest<QuestionDetailDto>
         { 
@@ -25,7 +25,7 @@ namespace ReddgitAPI.Application.Questions.Queries
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetQuestionWithAnswers(ApplicationDbContext dbContext, IMapper mapper)
+        public GetQuestion(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
