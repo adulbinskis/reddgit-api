@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ReddgitAPI.Application.Identity.Models;
 using ReddgitAPI.Application.Identity.Roles;
@@ -13,6 +14,16 @@ namespace ReddgitAPI.Application.Identity.Commands
             public string Username { get; set; }
             public string Email { get; set; }
             public string Password { get; set; }
+
+            public class Validator : AbstractValidator<Command>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.Email).NotEmpty().EmailAddress();
+                    RuleFor(x => x.Password).MinimumLength(6).MaximumLength(254);
+                    RuleFor(x => x.Username).NotEmpty().MinimumLength(3).MaximumLength(254);
+                }
+            }
         }
 
         private readonly UserManager<ApplicationUser> _userManager;

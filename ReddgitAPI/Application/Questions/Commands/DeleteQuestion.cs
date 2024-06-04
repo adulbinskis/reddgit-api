@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ReddgitAPI.Application.Questions.Models;
@@ -13,6 +14,14 @@ namespace ReddgitAPI.Application.Questions.Commands
         public class Command : IRequest<QuestionDetailDto>
         {
             public string QuestionId { get; set; }
+
+            public class Validator : AbstractValidator<Command>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.QuestionId).NotEmpty();
+                }
+            }
         }
 
         private readonly ApplicationDbContext _dbContext;

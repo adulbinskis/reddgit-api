@@ -7,6 +7,7 @@ using ReddgitAPI.ORM.Entities;
 using ReddgitAPI.ORM.Services;
 using System.Security.Claims;
 using System.Runtime.Serialization;
+using FluentValidation;
 
 namespace ReddgitAPI.Application.Questions.Commands
 {
@@ -16,6 +17,15 @@ namespace ReddgitAPI.Application.Questions.Commands
         {
             public string Title { get; set; }
             public string Content { get; set; }
+
+            public class Validator : AbstractValidator<Command>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.Title).NotEmpty().MaximumLength(128);
+                    RuleFor(x => x.Content).NotEmpty().MaximumLength(2048);
+                }
+            }
         }
 
         private readonly ApplicationDbContext _dbContext;

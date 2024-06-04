@@ -4,6 +4,7 @@ using ReddgitAPI.Application.Identity.Services;
 using ReddgitAPI.ORM.Entities;
 using ReddgitAPI.ORM.Services;
 using ReddgitAPI.Application.Identity.Models;
+using FluentValidation;
 
 namespace ReddgitAPI.Application.Identity.Commands
 {
@@ -13,6 +14,14 @@ namespace ReddgitAPI.Application.Identity.Commands
         {
             public string Email { get; set; }
             public string Password { get; set; }
+            public class Validator : AbstractValidator<Command>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.Email).NotEmpty().EmailAddress();
+                    RuleFor(x => x.Password).MinimumLength(6).MaximumLength(254);
+                }
+            }
         }
 
         private readonly UserManager<ApplicationUser> _userManager;

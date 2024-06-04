@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ReddgitAPI.Application.Questions.Models;
@@ -16,6 +17,16 @@ namespace ReddgitAPI.Application.Questions.Commands
             public string QuestionId { get; set; }
             public string Title { get; set; }
             public string Content { get; set; }
+
+            public class Validator : AbstractValidator<Command>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.QuestionId).NotEmpty();
+                    RuleFor(x => x.Title).NotEmpty().MaximumLength(128);
+                    RuleFor(x => x.Content).NotEmpty().MaximumLength(2048);
+                }
+            }
         }
 
         private readonly ApplicationDbContext _dbContext;
