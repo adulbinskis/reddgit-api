@@ -56,7 +56,8 @@ namespace ReddgitAPI.Application.Identity.Commands
             {
                 UserId = userInDb.Id,
                 Email = userInDb.Email,
-                Token = accessToken
+                Token = accessToken,
+                UserName = userInDb.UserName
             };
         }
     }
