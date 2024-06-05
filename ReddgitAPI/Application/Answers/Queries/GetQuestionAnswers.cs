@@ -36,6 +36,7 @@ namespace ReddgitAPI.Application.Answers.Queries
             var answers = await _dbContext.Answers
                 .Where(x => x.Deleted == false)
                 .Where(x => x.QuestionId == request.QuestionId)
+                .Include(q => q.ApplicationUser)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync(cancellationToken);
 
