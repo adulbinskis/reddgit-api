@@ -36,7 +36,14 @@ namespace ReddgitAPI.Application.Identity.Commands
         public async Task<RegistrationResponse> Handle(Command request, CancellationToken cancellationToken)
         {
             var result = await _userManager.CreateAsync(
-                new ApplicationUser { UserName = request.Username, Email = request.Email, Role = Role.User },
+                new ApplicationUser { 
+                    UserName = request.Username, 
+                    Email = request.Email, 
+                    Role = Role.User,
+                    EmailConfirmed = true,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = false,
+                },
                 request.Password
             );
 

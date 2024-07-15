@@ -8,9 +8,9 @@ using FluentValidation;
 
 namespace ReddgitAPI.Application.Identity.Commands
 {
-    public class Authenticate : IRequestHandler<Authenticate.Command, AuthResponse>
+    public class Authenticate : IRequestHandler<Authenticate.Command, AuthResponseWithTokens>
     {
-        public class Command : IRequest<AuthResponse>
+        public class Command : IRequest<AuthResponseWithTokens>
         {
             public string Email { get; set; }
             public string Password { get; set; }
@@ -35,7 +35,7 @@ namespace ReddgitAPI.Application.Identity.Commands
             _tokenService = tokenService;
         }
 
-        public async Task<AuthResponse> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<AuthResponseWithTokens> Handle(Command request, CancellationToken cancellationToken)
         {
             var managedUser = await _userManager.FindByEmailAsync(request.Email);
             if (managedUser == null || !await _userManager.CheckPasswordAsync(managedUser, request.Password))
@@ -50,14 +50,22 @@ namespace ReddgitAPI.Application.Identity.Commands
             }
 
             var accessToken = _tokenService.CreateToken(userInDb);
+
+            var refreshToken = await _tokenService.GenerateRefreshTokenAsync(userInDb, cancellationToken);
+
             await _context.SaveChangesAsync();
 
-            return new AuthResponse
+            return new AuthResponseWithTokens
             {
                 UserId = userInDb.Id,
                 Email = userInDb.Email,
-                Token = accessToken,
-                UserName = userInDb.UserName
+                UserName = userInDb.UserName,
+
+                Token = accessToken.Token,
+                RefreshToken = refreshToken.Token,
+
+                RefreshTokenExpirationDate = refreshToken.TokenExpirationDate,
+                AccessTokenExpirationDate = accessToken.TokenExpirationDate,
             };
         }
     }

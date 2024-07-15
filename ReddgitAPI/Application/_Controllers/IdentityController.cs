@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ReddgitAPI.Application.Identity.Commands;
 using ReddgitAPI.Application.Identity.Models;
-using ReddgitAPI.Application.Identity.Queries;
 
 namespace ReddgitAPI.Application._Controllers
 {
@@ -52,17 +51,58 @@ namespace ReddgitAPI.Application._Controllers
                 return BadRequest("Bad credentials");
             }
 
-            return Ok(response);
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                // .Strict for deploy
+                SameSite = SameSiteMode.None, 
+                Expires = response.RefreshTokenExpirationDate,
+            };
+
+            Response.Cookies.Append("refreshToken", response.RefreshToken, cookieOptions);
+
+            var authResponse = new AuthResponse
+            {
+                UserId = response.UserId,
+                Email = response.Email,
+                Token = response.Token,
+                UserName = response.UserName
+            };
+
+            return Ok(authResponse);
         }
 
 
-        [HttpGet("checkAuth")]
-        [Authorize(Roles = "User")]
-        public async Task<ActionResult<string>> CheckAuth()
+        [HttpGet("refresh")]
+        public async Task<ActionResult<AuthResponse>> Refresh()
         {
-            var response = await Mediator.Send(new CheckAuth.Query());
+            var refreshToken = Request.Cookies["refreshToken"];
 
-            return response;
+            var response = await Mediator.Send(new Refresh.Command
+            { 
+                RefreshToken = refreshToken
+            });
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = response.RefreshTokenExpirationDate,
+            };
+
+            Response.Cookies.Append("refreshToken", response.RefreshToken, cookieOptions);
+
+            var authResponse = new AuthResponse
+            {
+                UserId = response.UserId,
+                Email = response.Email,
+                Token = response.Token,
+                UserName = response.UserName
+            };
+
+            return authResponse;
         }
     }
 }
