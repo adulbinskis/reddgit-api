@@ -127,6 +127,9 @@ namespace ReddgitAPI.Application.Identity.Services
                 user.RefreshTokenExpirationDate = null;
 
                 await _context.SaveChangesAsync();
+            }else 
+             {
+                throw new Exception("User dont have token");
             }
         }
     }

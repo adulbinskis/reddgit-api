@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReddgitAPI.Application.Identity.Commands;
 using ReddgitAPI.Application.Identity.Models;
@@ -71,6 +72,24 @@ namespace ReddgitAPI.Application._Controllers
             };
 
             return Ok(authResponse);
+        }
+
+        [HttpPost("logout")]
+        public async Task<ActionResult<AuthResponse>> Logout()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            var response = await Mediator.Send(new Logout.Command
+            {
+                RefreshToken = refreshToken
+            });
+
+            if (refreshToken != null)
+            {
+                Response.Cookies.Delete("refreshToken");
+            }
+
+            return Ok();
         }
 
 
