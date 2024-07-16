@@ -13,7 +13,7 @@ namespace ReddgitAPI.Application.Identity.Services
     public class TokenService
     {
         // Adjustexpiration if needed
-        private const double ExpirationMinutes = 0.5f;
+        private const double ExpirationMinutes = 7;
         private readonly ILogger<TokenService> _logger;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
